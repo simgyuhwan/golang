@@ -6,9 +6,6 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"net/http"
-
-	"golang.org/x/sync/errgroup"
 )
 
 func main() {
@@ -31,23 +28,8 @@ func run(ctx context.Context) error {
 	url := fmt.Sprintf("http://%s", l.Addr().String())
 	log.Printf("start with: %q", url)
 
-	s := &http.Server{
-		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
-		}),
-	}
-	eg, ctx := errgroup.WithContext(ctx)
-	eg.Go(func() error {
-		if err := s.Serve(l); err != nil && err != http.ErrServerClosed {
-			log.Printf("failed to serve: %+v", err)
-			return err
-		}
-		return nil
-	})
+	mux := NewMux()
+	s := NewServer(l, mux)
 
-	<-ctx.Done()
-	if err := s.Shutdown(context.Background()); err != nil {
-		log.Printf("failed to shutdown: %+v", err)
-	}
-	return eg.Wait()
+	return s.Run(ctx)
 }
