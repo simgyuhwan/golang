@@ -29,7 +29,7 @@ func (r *Repository) AddTask(
 }
 
 func (r *Repository) ListTasks(
-	ctx context.Context, db Queryer, id entity.TaskID,
+	ctx context.Context, db Queryer, id entity.UserID,
 ) (entity.Tasks, error) {
 	tasks := entity.Tasks{}
 	sql := `SELECT 

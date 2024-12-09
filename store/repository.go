@@ -5,6 +5,7 @@ import (
 	"api/config"
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"time"
 
@@ -62,3 +63,11 @@ var (
 type Repository struct {
 	Clocker clock.Clocker
 }
+
+const (
+	ErrCodeMySQLErrorDuplicateEntry = 1062
+)
+
+var (
+	ErrAlreadyEntry = errors.New("duplicate entry")
+)
