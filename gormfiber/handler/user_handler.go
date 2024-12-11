@@ -158,15 +158,23 @@ func UserHandlerUpdateEmail(ctx *fiber.Ctx) error {
 
 func UserHandlerDelete(ctx *fiber.Ctx) error {
 	userId := ctx.Params("id")	
-
 	var user entity.User
-	err := database.DB.Delete(&user, "id = ?", userId).Error
+
+	err := database.DB.Debug().First(&user, "id=?", userId).Error
 	if err != nil {
+		return ctx.Status(404).JSON(fiber.Map{
+			"message" : "user not found",
+		})
+	}
+
+	errDelete := database.DB.Debug().Delete(&user).Error
+	if errDelete != nil {
 		return ctx.Status(500).JSON(fiber.Map{
 			"message" : "internal server error",
 		})
 	}
+
 	return ctx.Status(200).JSON(fiber.Map{
-		"message" : "success",
+		"message" : "user was deleted",
 	})
 }

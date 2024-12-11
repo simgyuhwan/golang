@@ -1,6 +1,7 @@
 package migration
 
 import (
+	"fmt"
 	"gofiber/database"
 	"gofiber/model/entity"
 	"log"
@@ -11,4 +12,5 @@ func RunMigration() {
 	if err != nil {
 		log.Println(err)
 	}
+	fmt.Println("database migrated")
 }
