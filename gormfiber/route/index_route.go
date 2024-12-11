@@ -1,6 +1,7 @@
 package route
 
 import (
+	"fmt"
 	"gofiber/config"
 	"gofiber/handler"
 
@@ -25,4 +26,12 @@ func RouteInit(r *fiber.App) {
 	r.Put("/user/:id", handler.UserHandlerUpdate)
 	r.Put("/user/:id/update-email", handler.UserHandlerUpdateEmail)
 	r.Delete("/user/:id", handler.UserHandlerDelete)
+	fmt.Printf("-----------------")
+	fmt.Printf("-----------------")
+	fmt.Printf("-----------------")
+	fmt.Printf("-----------------")
+	fmt.Printf("-----------------")
+	fmt.Printf("-----------------")
+	fmt.Printf("-----------------")
+	fmt.Printf("-----------------")
 }
