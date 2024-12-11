@@ -5,6 +5,7 @@ import (
 	"gofiber/model/entity"
 	"gofiber/model/request"
 	"gofiber/model/response"
+	"gofiber/utils"
 	"log"
 
 	"github.com/go-playground/validator/v10"
@@ -36,11 +37,20 @@ func UserHandlerCreate(ctx *fiber.Ctx) error {
 		})
 	}
 
+	hashedPassword, err := utils.HashingPassword(user.Password)
+	if err != nil {
+		log.Println(err)
+		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "internal server error",
+		})
+	}
+
 	newUser := entity.User{
 		Name: user.Name,
 		Email: user.Email,
 		Address: user.Address,
 		Phone: user.Phone,
+		Password: hashedPassword,
 	}
 	errCreateUser := database.DB.Create(&newUser).Error
 	if errCreateUser != nil {
