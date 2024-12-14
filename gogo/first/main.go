@@ -14,6 +14,27 @@ type config struct {
 	printUsage bool
 }
 
+type testConfig struct {
+	args []string
+	err error
+	config
+}
+
+tests := []testConfig{
+	{
+		args: []string("-h"),
+		err: nil,
+		config, config(printUsage: true, numTimes: 0),
+	},
+	{
+		args: []string("10"),
+		err: nil,
+		config, config(printUsage: false, numTimes: 10),
+	}
+
+
+}
+
 var usageString = fmt.Sprintf(`Usage: %s <integer> [-h|--help]
 
 A greeter application which prints the name you entered <integer> number of times.
